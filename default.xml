@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+     Copyright 2019, DornerWorks
+
+     This software may be distributed and modified according to the terms of
+     the BSD 2-Clause license. Note that NO WARRANTY is provided.
+     See "LICENSE_BSD2.txt" for details.
+  -->
+
+<manifest>
+
+<remote name="dw" fetch="https://github.com/dornerworks/"/>
+<remote name="seL4" fetch="https://github.com/seL4/"/>
+
+<default revision="armv8-vmm" remote="dw"/>
+
+<project name="seL4" path="kernel">
+    <linkfile src="libsel4" dest="libs/libsel4"/>
+</project>
+
+<project name="seL4_tools" path="projects/tools">
+    <linkfile src="common-tool" dest="tools/common"/>
+    <linkfile src="kbuild-tool" dest="tools/kbuild"/>
+    <linkfile src="elfloader-tool" dest="tools/elfloader"/>
+</project>
+
+<project name="musllibc" path="libs/libmuslc" remote="seL4" revision="8.0.x-compatible"/>
+
+<project name="seL4_libs" path="projects/seL4_libs">
+    <linkfile src="libsel4muslcsys" dest="libs/libsel4muslcsys"/>
+    <linkfile src="libsel4platsupport" dest="libs/libsel4platsupport"/>
+    <linkfile src="libsel4allocman" dest="libs/libsel4allocman"/>
+    <linkfile src="libsel4vka" dest="libs/libsel4vka"/>
+    <linkfile src="libsel4vspace" dest="libs/libsel4vspace"/>
+    <linkfile src="libsel4utils" dest="libs/libsel4utils"/>
+    <linkfile src="libsel4simple" dest="libs/libsel4simple"/>
+    <linkfile src="libsel4simple-default" dest="libs/libsel4simple-default"/>
+    <linkfile src="libsel4debug" dest="libs/libsel4debug"/>
+</project>
+
+<project name="util_libs" path="projects/util_libs">
+    <linkfile src="libcpio" dest="libs/libcpio"/>
+    <linkfile src="libelf" dest="libs/libelf"/>
+    <linkfile src="libplatsupport" dest="libs/libplatsupport"/>
+    <linkfile src="libutils" dest="libs/libutils"/>
+</project>
+
+<project name="seL4_projects_libs" path="projects/seL4_projects_libs">
+    <linkfile src="libsel4arm-vmm" dest="libs/libsel4arm-vmm"/>
+    <linkfile src="libsel4dma" dest="libs/libsel4dma"/>
+    <linkfile src="libsel4vchan" dest="libs/libsel4vchan"/>
+</project>
+
+<project name="sel4arm-vmm" path="projects/sel4arm-vmm">
+    <linkfile src="Makefile" dest="Makefile"/>
+    <linkfile src="Kbuild" dest="Kbuild"/>
+    <linkfile src="Kconfig" dest="Kconfig"/>
+    <linkfile src="configs" dest="configs"/>
+    <linkfile src="apps/linux" dest="apps/linux"/>
+    <linkfile src="apps/sel4arm-vmm" dest="apps/sel4arm-vmm"/>
+    <linkfile src="apps/communication-server" dest="apps/communication-server"/>
+</project>
+
+</manifest>
+
