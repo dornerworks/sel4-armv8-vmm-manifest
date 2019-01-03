@@ -53,7 +53,7 @@ petalinux-build
 ```
 - Copy built image to seL4 project
 ```
-cp images/linux/Image ~/sel4-vmm/apps/linux/zynqmp/Image-1
+cp images/linux/Image ~/sel4-vmm/apps/linux/zynqmp/Image1
 ```
 - Copy `images/linux/u-boot.bin` to a boot partition on an SD card.
 
