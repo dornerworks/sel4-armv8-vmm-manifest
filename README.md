@@ -79,6 +79,6 @@ aarch64-linux-gnu-objcopy -O binary images/sel4arm-vmm-image-arm-zynqmp sel4-vmm
 - Copy sel4-vmm to your tftp directory
 - Run the image via u-boot
 ```
-dhcp; tftpb 0x10000000 172.192.10.15:sel4-vmm; run 0x10000000
+dhcp; tftpb 0x10000000 172.192.10.15:sel4-vmm; go 0x10000000
 ```
 - The virtual console can be switched with `ctrl+]`
