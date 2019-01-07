@@ -15,7 +15,8 @@ repo sync
 These instructions assume you are using the [seL4 docker image](https://github.com/SEL4PROJ/seL4-CAmkES-L4v-dockerfiles).
 
 ### Build the Linux Kernel
-- Install petalinux using the following [instructions](https://xilinx-wiki.atlassian.net/wiki/spaces/A/pages/18841618/PetaLinux+Getting+Started). (I used version 2017.4)
+- Install petalinux using the following [instructions](https://xilinx-wiki.atlassian.net/wiki/spaces/A/pages/18841618/PetaLinux+Getting+Started). (I used version 2017.3)
+  - Note: We have seen some issues with using 2017.4 and we haven't tested any newer versions.
 - Create a project from the petalinux BSP:
 ```
 cd ~
@@ -55,7 +56,11 @@ petalinux-build
 ```
 cp images/linux/Image ~/sel4-vmm/apps/linux/zynqmp/Image1
 ```
-- Copy `images/linux/u-boot.bin` to a boot partition on an SD card.
+- Generate BOOT.bin
+```
+petalinux-package --boot --fsbl images/linux/zynqmp_fsbl.elf --pmufw images/linux/pmufw.elf --u-boot
+```
+- Copy `./BOOT.BIN` to a boot partition on an SD card.
 
 ### Build seL4 and applications
 - Start the seL4 Docker
@@ -76,9 +81,12 @@ aarch64-linux-gnu-objcopy -O binary images/sel4arm-vmm-image-arm-zynqmp sel4-vmm
 ```
 
 ### Boot the image
+- Connect to both APU UARTs from the ZCU102
+  - U-Boot and seL4 use the first UART
+  - The VMs all use the second UART
+    - The virtual console can be switched with `ctrl+]`
 - Copy sel4-vmm to your tftp directory
 - Run the image via u-boot
 ```
 dhcp; tftpb 0x10000000 172.192.10.15:sel4-vmm; go 0x10000000
 ```
-- The virtual console can be switched with `ctrl+]`
