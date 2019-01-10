@@ -1,7 +1,8 @@
 # sel4-armv8-vmm-manifest
 A manifest that allows one to build virtualized seL4 for zcu102 and i.MX8.
 
-All of the code pointed to by `default.xml` is released under DISTRIBUTION STATEMENT A. Approved for public release; distribution unlimited.
+All of the code pointed to by `default.xml` is released by TARDEC for contract ASM17-04 under 
+DISTRIBUTION STATEMENT A. Approved for public release; distribution unlimited.
 
 ## Get the source code
 ```
