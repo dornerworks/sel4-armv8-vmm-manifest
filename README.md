@@ -95,12 +95,22 @@ dhcp; tftpb 0x10000000 172.192.10.15:sel4-vmm; go 0x10000000
 ## i.MX8
 
 ### Build the Linux Kernel
-- Get the source (May want to use a newer version, but we haven't tested it)
+- Install the ARM64 toolchain:
 ```
-mkdir imx8-linux
-cd imx8-linux
-repo init -u https://source.codeaurora.org/external/imx/imx-manifest -b imx-linux-morty -m imx-4.9.51-8qm_beta2.xml
-repo sync
+sudo apt-get install crossbuild-essential-arm64
+```
+-Download the kernel repository:
+```
+git clone https://github.com/boundarydevices/linux-imx6 \
+    -b boundary-imx_4.9.x_2.0.0_ga
+cd linux-imx6
+```
+-Build the kernel and device trees:
+```
+export ARCH=arm64
+export CROSS_COMPILE=aarch64-linux-gnu-
+make boundary_defconfig
+make -j8
 ```
 - TBD: Add the vchan module
   - Get the vchan source code
@@ -118,17 +128,32 @@ repo sync
   cp ~/vchan_module/vchan.bb meta-???/recipes-modules/vchan/vchan.bb
   cp ~/vchan_module/vchan/* meta-???/recipes-modules/vchan/files/
   ```
-- Build Linux (TBD: How to build with initramfs. Might need a new recipe)
-```
-MACHINE=imx8qmlpddr4arm2 DISTRO=fsl-imx-fb source ./fsl-setup-release.sh -b bld-fb
-DISTRO=fsl-imx-fb bitbake core-image-minimal
-```
-  - If using the latest board, you want to use `MACHINE=imx8qmmek` instead.
 - Copy built image to seL4 project
 ```
 cp ./tmp/deploy/images/imx8qmlpddr4arm2/Image-initramfs-imx8qmlpddr4arm2.bin ~/sel4-vmm/apps/linux/imx8/???
 ```
 - TBD: Copy `???/u-boot.bin` to a boot partition on an SD card.
+
+### Build U-BOOT
+- Download the bootloader repository:
+```
+git clone https://github.com/boundarydevices/u-boot-imx6 \
+-b boundary-v2018.07
+cd u-boot-imx6
+```
+- Build the kernel and device trees:
+```
+export ARCH=arm64
+export CROSS_COMPILE=aarch64-linux-gnu-
+make nitrogen8m_defconfig
+make -j4
+```
+-In order to generate the final flash.bin you need imx-mkimage repository:
+```
+git clone https://github.com/boundarydevices/imx-mkimage.git
+cd imx-mkimage
+UBOOT_PATH=/pathtoyouruboottree/ ./make_boundary.sh
+```
 
 ### Build seL4 and applications
 - Start the seL4 Docker
@@ -136,12 +161,12 @@ cp ./tmp/deploy/images/imx8qmlpddr4arm2/Image-initramfs-imx8qmlpddr4arm2.bin ~/s
 cd ~/sel4-vmm
 make -C /path/to/seL4-CAmkES-L4v-dockerfiles user HOST_DIR=$(pwd)
 ```
-- Install old necessary package
+- Install old necessary packages
 ```
 sudo pip2 install tempita
 sudo pip3 install tempita
 ```
-- Build for the ZCU102
+- Build for the i.MX8
 ```
 make imx8_vm_linux_defconfig
 make
